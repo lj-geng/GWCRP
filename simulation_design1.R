@@ -1,13 +1,15 @@
+###########################################################################
 ## Simulation Design 1, true cluster: 1, 2, 3
+###########################################################################
 
-# packages needed: "MASS", "Matrix", "survival", "matrixStats"
+# packages needed: "MASS", "Matrix", "survival", "matrixStats", "mvtnorm", "eha", "parallel"
 ipak <- function(pkg){
   new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
   if (length(new.pkg))
     install.packages(new.pkg, dependencies = TRUE)
   try(sapply(pkg, require, character.only = TRUE), silent = TRUE)
 }
-packages <- c("MASS", "Matrix", "survival", "matrixStats", "eha", "parallel")
+packages <- c("MASS", "Matrix", "survival", "matrixStats", "mvtnorm", "eha", "parallel")
 ipak(packages)
 
 
@@ -16,6 +18,7 @@ source("GWCRP.R")
 source("getDahl.R")
 source("LPML.R")
 
+# load graph distance matrix of pairs of counties in Louisiana
 load("d_matrix.RData")
 
 # true clustering configuration of Deigsn 1
@@ -80,9 +83,6 @@ for (i in 1:length(simdata_hesshat)){
   }
 }
 
-# save(simdata, file = "simdata_weak123_11142019.Rdata")
-# save(simdata_betahat, simdata_hesshat, simdata_sigmahat,
-#      file = "simestdata_weak123_11142019.Rdata")
 save(simdata, file = "simdata_design1.Rdata")
 save(simdata_betahat, simdata_hesshat, simdata_sigmahat, 
      file = "simestdata_design1.Rdata")
@@ -94,8 +94,8 @@ load("simestdata_design1.Rdata")
 sigma0 <- 100 * diag(p)
 alpha <- 1
 initNClusters <- 10 # initial number of clusters for MCMC
-niterations <- 2000 # iterations for MCMC
-burnin <- 500 # burnin for MCMC
+niterations <- 2000 # number of iterations for MCMC
+burnin <- 500 # number of burnin iterations for MCMC
 
 sim <- function(isim){
   # library(MASS)
@@ -112,7 +112,6 @@ sim <- function(isim){
     Dahlout <- reorderDahl(getDahl(out, burn=burnin))
     LPML <- LPML(dat, list(Iterates = out$Iterates[(burnin+1):niterations]),
                  p1 = p1, cuts = timebreaks)
-    # simresult[[i]] <- list(h = h[i], out = out, Dahlout = Dahlout)
     simresult[[i]] <- list(h = h[i], out = out, Dahlout = Dahlout, LPML = LPML)
   }
   return(simresult)
@@ -123,9 +122,4 @@ cl <- makeCluster(Sys.getenv()["SLURM_NTASKS"], type = "MPI")
 clusterExport(cl, varlist = ls())
 simresult <- clusterApply(cl, 1:nsims, sim)
 
-# save.image("weak123_11142019.RData")
 save.image("simresult_design1.RData")
-
-
-
-
