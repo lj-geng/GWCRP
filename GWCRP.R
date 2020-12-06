@@ -9,7 +9,7 @@ packages <- c("mvtnorm","MASS")
 ipak(packages)
 
 ###########################################################################
-## GWCRP MCMC Collapsed sampler  
+## GWCRP MCMC Collapsed Gibbs sampler  
 ###########################################################################
 
 GWCRP <- function(betahat, sigmahat, d_matrix, h, niterations, 
