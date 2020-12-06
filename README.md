@@ -1,4 +1,4 @@
-# GWCRP
+# Code for Bayesian Spatial Homogeneity Pursuit for Survival Data with an Application to the SEER Respiratory Cancer Data
 
 `GWCRP.R` is the MCMC Collapsed sampler function for GWCRP method, and returns
 the posterior samples of the MCMC.
