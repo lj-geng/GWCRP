@@ -16,3 +16,6 @@ the function of computing the Hessian matrix.
 Louisiana.
 
 `simulation_design1.R` gives the code for simulation study. 
+
+`realdata_analysis.R` gives the code for analyzing the SEER respiratory cancer
+data in Louisiana.
