@@ -1,4 +1,4 @@
-GWCRP
+# GWCRP
 
 `GWCRP.R` is the MCMC Collapsed sampler function for GWCRP method, and returns
 the posterior samples of the MCMC.
